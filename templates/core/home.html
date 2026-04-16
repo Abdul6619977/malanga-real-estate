@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Aura Estates | Premium Properties{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-particles"></div>
+    <div class="hero-content">
+        <span class="hero-badge">✦ Luxury Real Estate</span>
+        <h1>Find Your <em>Dream</em><br>Property Today</h1>
+        <p>Explore our exclusive collection of luxury homes, modern villas, and premium apartments curated for the most discerning buyers.</p>
+        <div class="hero-cta-group">
+            <a href="#properties" class="btn-primary">Browse Properties →</a>
+            <a href="/about/" class="btn-ghost">Learn About Us</a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="stat-number">{{ properties|length }}+</div>
+        <div class="stat-label">Listings</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Cities</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">200+</div>
+        <div class="stat-label">Happy Buyers</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">5★</div>
+        <div class="stat-label">Client Rating</div>
+    </div>
+</div>
+
+<!-- Properties Listings -->
+<div id="properties">
+    <div class="section-header">
+        <div>
+            <h2>Featured Properties</h2>
+            <p>{{ properties|length }} exclusive listing{{ properties|length|pluralize }} available now</p>
+        </div>
+        <a href="/support/" class="btn-ghost">Need help? Contact Us →</a>
+    </div>
+
+    <div class="property-grid">
+        {% for property in properties %}
+        <div class="property-card">
+            <div class="property-image-wrapper">
+                {% if property.image %}
+                    <img src="{{ property.image.url }}" alt="{{ property.title }}" class="property-image">
+                {% else %}
+                    <div style="background: linear-gradient(135deg,#1a2235,#0f3460); width:100%; height:100%; min-height:260px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:2rem;">🏠</div>
+                {% endif %}
+                <span class="property-badge">For Sale</span>
+                <span class="property-price">${{ property.price|floatformat:0 }}</span>
+            </div>
+            <div class="property-details">
+                <h3 class="property-title">{{ property.title }}</h3>
+                <p class="property-location">📍 {{ property.location }}</p>
+                <p class="property-desc">{{ property.description }}</p>
+                <div class="features-row">
+                    {% for feature in property.features.split %}
+                    <span class="feature-badge">{{ feature }}</span>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'property_detail' property.id %}" class="btn-outline">View Details &amp; Buy →</a>
+            </div>
+        </div>
+        {% empty %}
+        <div style="text-align:center; color:var(--text-muted); padding:60px; grid-column:1/-1; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border);">
+            <div style="font-size:3rem; margin-bottom:16px;">🏗️</div>
+            <p>No properties listed yet. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

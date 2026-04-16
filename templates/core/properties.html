@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Add New Property</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Property Name (e.g. Unit 101)" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <input type="number" name="rent" placeholder="Monthly Rent" required>
+        <button type="submit">Add Property</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>All Properties</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Rent</th>
+                <th>Status</th>
+                <th>Tenant</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in properties %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.location }}</td>
+                <td>${{ p.rent }}</td>
+                <td>
+                    <span class="{% if p.status == 'Available' %}status-available{% else %}status-occupied{% endif %}">
+                        {{ p.status }}
+                    </span>
+                </td>
+                <td>{{ p.tenant.name|default:"-" }}</td>
+                <td>
+                    {% if p.status == 'Occupied' %}
+                        <a href="{% url 'vacate_property' p.id %}" style="font-size: 0.8rem; color: #991b1b; text-decoration: none; border: 1px solid #991b1b; padding: 2px 8px; border-radius: 4px;">Mark Available</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

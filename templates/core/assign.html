@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Assign Tenant to Property</h2>
+    <p style="color: #64748b;">Link a tenant to an available property. This will mark the property as Occupied.</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <label>Select Tenant</label>
+        <select name="tenant_id" required>
+            <option value="">-- Choose Tenant --</option>
+            {% for t in tenants %}
+                <option value="{{ t.id }}">{{ t.name }}</option>
+            {% endfor %}
+        </select>
+        
+        <label>Select Available Property</label>
+        <select name="property_id" required>
+            <option value="">-- Choose Property --</option>
+            {% for p in properties %}
+                <option value="{{ p.id }}">{{ p.name }} (Room: {{ p.location }})</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit">Complete Assignment</button>
+    </form>
+</div>
+{% endblock %}

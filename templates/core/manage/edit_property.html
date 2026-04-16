@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Edit {{ property.name }} | Malanga1 Admin{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+        <div>
+            <h1 style="margin: 0; color: var(--bg-malanga); font-weight: 900;">Edit Listing</h1>
+            <p style="color: var(--text-muted); margin-top: 5px;">Updating: <strong>{{ property.name }}</strong></p>
+        </div>
+        <a href="{% url 'properties' %}" style="text-decoration: none; color: var(--text-muted); font-weight: 700; font-size: 0.9rem;">← Cancel & Return</a>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="card" style="padding: 4rem;">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label>Property Name</label>
+                <input type="text" name="name" value="{{ property.name }}" required>
+            </div>
+            <div class="form-group">
+                <label>Asset Status</label>
+                <select name="status" required>
+                    <option value="Available" {% if property.status == 'Available' %}selected{% endif %}>Available for Acquisition</option>
+                    <option value="Sold" {% if property.status == 'Sold' %}selected{% endif %}>Listing Closed (SOLD)</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label>Property Type</label>
+                <select name="property_type" required>
+                    <option value="House" {% if property.property_type == 'House' %}selected{% endif %}>House</option>
+                    <option value="Apartment" {% if property.property_type == 'Apartment' %}selected{% endif %}>Apartment</option>
+                    <option value="Commercial" {% if property.property_type == 'Commercial' %}selected{% endif %}>Commercial Center</option>
+                    <option value="Plot" {% if property.property_type == 'Plot' %}selected{% endif %}>Plot / Land</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Geographic Location</label>
+                <input type="text" name="location" value="{{ property.location }}" required>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label>Price (USD)</label>
+                <input type="number" step="0.01" name="price" value="{{ property.price }}" required>
+            </div>
+            <div class="form-group">
+                <label>Bedrooms</label>
+                <input type="number" name="bedrooms" value="{{ property.bedrooms|default:'' }}">
+            </div>
+            <div class="form-group">
+                <label>Size (sqm)</label>
+                <input type="number" name="size_sqm" value="{{ property.size_sqm|default:'' }}">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 2rem;">
+            <label>Legal & Marketing Description</label>
+            <textarea name="description" rows="6">{{ property.description }}</textarea>
+        </div>
+
+        <div style="background: #f8fafc; padding: 2.5rem; border-radius: 12px; border: 1px solid var(--border-light); margin-bottom: 3rem;">
+            <h4 style="margin-top: 0; color: var(--bg-malanga); font-size: 1.1rem; margin-bottom: 1.5rem;">Media Assets Management</h4>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem;">
+                <div>
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 10px;">Replace Featured Image</label>
+                    <input type="file" name="image" style="background: white; border: 1px dashed var(--border-light); padding: 10px; width: 100%; border-radius: 6px;">
+                    {% if property.image %}
+                        <div style="margin-top: 15px; font-size: 0.8rem; color: #166534;">Current: {{ property.image.name }}</div>
+                    {% endif %}
+                </div>
+                <div>
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 10px;">Add More Gallery Images</label>
+                    <input type="file" name="gallery_images" multiple style="background: white; border: 1px dashed var(--border-light); padding: 10px; width: 100%; border-radius: 6px;">
+                    <p style="font-size: 0.75rem; color: #64748b; margin-top: 8px;">You can select multiple files to expand the gallery.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn-luxury" style="flex: 2; padding: 20px;">Save All Changes</button>
+            <a href="{% url 'delete_property' property.id %}" onclick="return confirm('WARNING: This will permanently remove this property and all associated media from the server. Proceed?')" class="btn-luxury" style="flex: 1; background: #fee2e2; color: #b91c1c; border-color: #fca5a5; padding: 20px; text-decoration: none; text-align: center;">Delete Listing</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

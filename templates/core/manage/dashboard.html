@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Sales Performance Dashboard | Malanga1 Admin{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+        <div>
+            <h1 style="margin: 0; color: var(--bg-malanga);">Sales Performance</h1>
+            <p style="color: var(--text-muted); margin-top: 5px;">Real-time analytics for your property portfolio.</p>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <a href="{% url 'properties' %}" class="btn-luxury" style="width: auto; padding: 10px 20px; font-size: 0.8rem;">Add Listing</a>
+            <a href="{% url 'inquiries' %}" class="btn-luxury" style="width: auto; padding: 10px 20px; font-size: 0.8rem; background: var(--nav-text);">Manage Leads</a>
+        </div>
+    </div>
+    
+    <!-- Advanced Metric Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+        <div style="background: #f8fafc; padding: 2rem; border: 1px solid var(--border-light); border-left: 4px solid #16a34a;">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Realized Revenue</h3>
+            <div style="font-size: 2.2rem; font-weight: 900; color: #166534; margin: 10px 0;">${{ realized_revenue }}</div>
+            <p style="margin:0; font-size: 0.85rem; color: #64748b;">Value of <b>{{ sold_properties }}</b> properties sold</p>
+        </div>
+        
+        <div style="background: #f8fafc; padding: 2rem; border: 1px solid var(--border-light); border-left: 4px solid var(--bg-malanga);">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Conversion Rate</h3>
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--bg-malanga); margin: 10px 0;">{{ conversion_rate }}%</div>
+            <p style="margin:0; font-size: 0.85rem; color: #64748b;">Leads to sales efficiency</p>
+        </div>
+
+        <div style="background: #f8fafc; padding: 2rem; border: 1px solid var(--border-light); border-left: 4px solid var(--primary);">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Current Inventory</h3>
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--text-dark); margin: 10px 0;">${{ total_inventory_value }}</div>
+            <p style="margin:0; font-size: 0.85rem; color: #64748b;">Active listings value</p>
+        </div>
+
+        <div style="background: #f8fafc; padding: 2rem; border: 1px solid var(--border-light); border-left: 4px solid var(--secondary);">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Buyer Interest</h3>
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin: 10px 0;">{{ total_inquiries }}</div>
+            <p style="margin:0; font-size: 0.85rem; color: #64748b;">Total raw inquiries</p>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem;">
+    <!-- Chart: Inquiry Volume -->
+    <div class="card">
+        <h3 style="margin-bottom: 2rem; color: var(--bg-malanga);">Top Trending Properties</h3>
+        <canvas id="leadsChart" height="200"></canvas>
+    </div>
+
+    <!-- Metric Breakdown -->
+    <div class="card">
+        <h3 style="margin-bottom: 2rem; color: var(--bg-malanga);">Portfolio Overview</h3>
+        <div style="display: flex; align-items: center; justify-content: center; height: 200px;">
+            <canvas id="portfolioChart"></canvas>
+        </div>
+        <div style="margin-top: 2rem; display: flex; justify-content: space-between; border-top: 1px solid var(--border-light); padding-top: 2rem;">
+            <div style="text-align: center;">
+                <b style="display: block; font-size: 1.2rem; color: var(--bg-malanga);">{{ total_properties }}</b>
+                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Total units</span>
+            </div>
+            <div style="text-align: center;">
+                <b style="display: block; font-size: 1.2rem; color: #16a34a;">{{ sold_properties }}</b>
+                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Units Sold</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="margin: 0; color: var(--bg-malanga);">Recent Sales Leads</h2>
+        <a href="{% url 'inquiries' %}" style="color: var(--bg-malanga); text-decoration: none; font-size: 0.9rem; font-weight: 700;">Full Inbox →</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Property</th>
+                <th>Buyer Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inq in new_inquiries %}
+            <tr>
+                <td style="color: var(--text-muted); font-size: 0.85rem;">{{ inq.created_at|date:"M d" }}</td>
+                <td><strong>{{ inq.property.name }}</strong></td>
+                <td>{{ inq.customer_name }}</td>
+                <td>
+                    <span style="padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; background: {% if inq.status == 'New' %}#fef9c3; color: #854d0e;{% elif inq.status == 'Sold' %}#dcfce7; color: #166534;{% else %}#f1f5f9; color: #475569;{% endif %}">
+                        {{ inq.status }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="text-align: center; padding: 3rem; color: var(--text-muted);">No inquiries yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Bar Chart: Leads by Property
+    const ctxLeads = document.getElementById('leadsChart').getContext('2d');
+    new Chart(ctxLeads, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Inquiries',
+                data: {{ chart_data|safe }},
+                backgroundColor: '#002f5b',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // Doughnut Chart: Portfolio
+    const ctxPort = document.getElementById('portfolioChart').getContext('2d');
+    new Chart(ctxPort, {
+        type: 'doughnut',
+        data: {
+            labels: ['Sold', 'Available'],
+            datasets: [{
+                data: [{{ sold_properties }}, {{ total_properties }} - {{ sold_properties }}],
+                backgroundColor: ['#16a34a', '#002f5b'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } } },
+            cutout: '70%'
+        }
+    });
+</script>
+{% endblock %}

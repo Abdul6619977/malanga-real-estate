@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Malanga1 Company Ltd | Real Estate, Construction & Land Security{% endblock %}
+
+{% block content %}
+<!-- HOME SECTION -->
+<section id="home" class="hero">
+    <div style="max-width: 1000px; margin: 0 auto;">
+        <span style="background: var(--primary-glow); color: var(--bg-malanga); padding: 8px 24px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; display: inline-block; margin-bottom: 2rem; border: 1px solid rgba(0, 47, 91, 0.2);">Northern Ghana's Trusted Partner</span>
+        <h1>Litigation-Free <em>Land</em> &<br>Premier Construction</h1>
+        <p>Solving accommodation challenges through verified real estate, strict documentation, and architectural excellence in Tamale and Accra.</p>
+        
+        <!-- Floating Search Filter -->
+        <form method="GET" action="{% url 'public_home' %}#properties" class="floating-search" style="max-width: 1100px; padding: 10px 15px;">
+            <div style="flex: 1; display: flex; align-items: center; padding: 0 15px; border-right: 1px solid var(--border-light);">
+                <span style="font-size: 1.2rem; margin-right: 10px;">📍</span>
+                <select name="location" id="location-filter" style="border: none; width: 100%; font-size: 1rem; color: var(--text-dark); background: transparent; cursor: pointer; font-family: inherit; font-weight: 600;">
+                    <option value="all" {% if current_location == 'all' or not current_location %}selected{% endif %}>Locations</option>
+                    <option value="tamale" {% if current_location == 'tamale' %}selected{% endif %}>Tamale</option>
+                    <option value="accra" {% if current_location == 'accra' %}selected{% endif %}>Accra</option>
+                </select>
+            </div>
+            <div style="flex: 1; display: flex; align-items: center; padding: 0 15px; border-right: 1px solid var(--border-light);">
+                <span style="font-size: 1.2rem; margin-right: 10px;">🏠</span>
+                <select name="type" id="type-filter" style="border: none; width: 100%; font-size: 1rem; color: var(--text-dark); background: transparent; cursor: pointer; font-family: inherit; font-weight: 600;">
+                    <option value="all" {% if current_type == 'all' or not current_type %}selected{% endif %}>All Types</option>
+                    <option value="House" {% if current_type == 'House' %}selected{% endif %}>House</option>
+                    <option value="Apartment" {% if current_type == 'Apartment' %}selected{% endif %}>Apartment</option>
+                    <option value="Commercial" {% if current_type == 'Commercial' %}selected{% endif %}>Commercial</option>
+                    <option value="Plot" {% if current_type == 'Plot' %}selected{% endif %}>Plot / Land</option>
+                </select>
+            </div>
+            <div style="flex: 0.8; display: flex; align-items: center; padding: 0 15px; border-right: 1px solid var(--border-light);">
+                <span style="font-size: 1.2rem; margin-right: 10px;">🛏️</span>
+                <select name="bedrooms" style="border: none; width: 100%; font-size: 1rem; color: var(--text-dark); background: transparent; cursor: pointer; font-family: inherit; font-weight: 600;">
+                    <option value="any" {% if current_bedrooms == 'any' or not current_bedrooms %}selected{% endif %}>Beds</option>
+                    <option value="1" {% if current_bedrooms == '1' %}selected{% endif %}>1+</option>
+                    <option value="2" {% if current_bedrooms == '2' %}selected{% endif %}>2+</option>
+                    <option value="3" {% if current_bedrooms == '3' %}selected{% endif %}>3+</option>
+                    <option value="4" {% if current_bedrooms == '4' %}selected{% endif %}>4+</option>
+                </select>
+            </div>
+            <div style="flex: 1.5; display: flex; align-items: center; padding: 0 15px;">
+                <span style="font-size: 1.2rem; margin-right: 10px;">💰</span>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="number" name="min_price" value="{{ min_price|default:'' }}" placeholder="Min $" style="border: 1px solid var(--border-light); width: 90px; padding: 8px; border-radius: 6px; font-size: 0.9rem; font-family: inherit;">
+                    <span style="color: var(--text-muted);">-</span>
+                    <input type="number" name="max_price" value="{{ max_price|default:'' }}" placeholder="Max $" style="border: 1px solid var(--border-light); width: 90px; padding: 8px; border-radius: 6px; font-size: 0.9rem; font-family: inherit;">
+                </div>
+            </div>
+            <button type="submit" class="btn-luxury" style="width: auto; padding: 12px 30px; border-radius: 8px; margin-left: 10px; font-size: 0.95rem;">Filter</button>
+        </form>
+    </div>
+</section>
+
+<!-- MEDIA & EDUCATION HUB -->
+<div style="background: var(--bg-malanga); padding: 100px 2rem;">
+    <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: center;">
+        <div>
+            <h2 style="color: var(--primary); font-size: 3rem; margin-bottom: 2rem; line-height: 1.2;">Malanga One in the Media</h2>
+            <p style="color: rgba(255,255,255,0.8); line-height: 1.8; margin-bottom: 3rem; font-size: 1.15rem;">
+                Our CEO, <b>Wumpini Iliasu</b>, is a prominent voice in the Dagbon real estate landscape, frequently sharing insights on property investment and land security across regional media.
+            </p>
+            <div style="display: flex; gap: 30px; align-items: center;">
+                <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); flex: 1; text-align: center; transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <h4 style="color: white; margin-bottom: 5px; font-size: 1.2rem;">Dagbon FM</h4>
+                    <p style="color: var(--primary); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Featured Interview</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); flex: 1; text-align: center; transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <h4 style="color: white; margin-bottom: 5px; font-size: 1.2rem;">Majority Radio</h4>
+                    <p style="color: var(--primary); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Property Advisor</p>
+                </div>
+            </div>
+        </div>
+        <div style="background: white; padding: 4rem; border-radius: 16px; box-shadow: 0 40px 80px rgba(0,0,0,0.3);">
+            <h3 style="color: var(--bg-malanga); margin-bottom: 1.5rem; font-size: 1.8rem; font-weight: 800;">Legal Education</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.1rem; font-style: italic;">"My mission is to solve accommodation challenges by providing affordable, genuine, and litigation-free plots to all Ghanaians." <br><br><span style="font-weight: 700; font-style: normal; color: var(--bg-malanga);">— Mr. Malanga</span></p>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 20px;">
+                <li style="display: flex; align-items: flex-start; gap: 15px; color: var(--text-dark); font-size: 1.05rem;">
+                    <div style="background: #dcfce7; color: #166534; padding: 5px; border-radius: 50%; font-size: 0.8rem;">✓</div>
+                    <span>Direct land verification with local traditional authorities.</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 15px; color: var(--text-dark); font-size: 1.05rem;">
+                    <div style="background: #dcfce7; color: #166534; padding: 5px; border-radius: 50%; font-size: 0.8rem;">✓</div>
+                    <span>Hassle-free title handing over and site plan regularisation.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ABOUT SECTION -->
+<div id="about" style="max-width: 1300px; margin: 0 auto; padding: 140px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center;">
+    <div>
+        <div style="width: 80px; height: 5px; background: var(--bg-malanga); margin-bottom: 2.5rem;"></div>
+        <h2 style="font-size: 3.5rem; color: var(--bg-malanga); line-height: 1.1; margin-bottom: 2rem; font-weight: 900; letter-spacing: -0.02em;">Solving Accommodation Challenges</h2>
+        <p style="font-size: 1.25rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 3rem;">
+            Since our inception, Malanga1 Company Ltd has focused on delivering litigation-free land combined with modern architectural design. We specialize in providing verified documentation in high-growth areas of Tamale.
+        </p>
+        <div style="display: flex; gap: 50px; border-top: 1px solid var(--border-light); padding-top: 3rem;">
+            <div>
+                <b style="font-size: 2.5rem; color: var(--bg-malanga); display: block; font-weight: 900;">100%</b>
+                <span style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Litigation Free</span>
+            </div>
+            <div>
+                <b style="font-size: 2.5rem; color: var(--bg-malanga); display: block; font-weight: 900;">Tamale</b>
+                <span style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Headquarters</span>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;">
+        <div style="position: absolute; top: -30px; left: -30px; width: 100%; height: 100%; border: 2px solid var(--border-light); border-radius: 12px; z-index: -1;"></div>
+        <img src="{% static 'images/logo.jpg' %}" alt="Malanga1 Vision" style="width: 100%; border-radius: 12px; box-shadow: 0 30px 60px rgba(0, 47, 91, 0.15);">
+    </div>
+</div>
+
+<!-- SERVICES SECTION -->
+<div id="services" style="background: #f8fafc; padding: 140px 2rem; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+    <div style="max-width: 1300px; margin: 0 auto;">
+        <div class="section-title">
+            <h2>Professional Services</h2>
+            <p>Integrated solutions for construction, land security, and architectural design.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+            <div style="background: #ffffff; padding: 4rem 3rem; border: 1px solid var(--border-light); border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,47,91,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                <div style="width: 80px; height: 80px; background: #f1f5f9; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 2rem;">🏢</div>
+                <h3 style="color: var(--bg-malanga); font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 800;">Architectural Design</h3>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7;">Offering modern building construction, renovation, and bespoke architectural design tailored for the Northern climate.</p>
+            </div>
+            <div style="background: #ffffff; padding: 4rem 3rem; border: 1px solid var(--border-light); border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,47,91,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                <div style="width: 80px; height: 80px; background: #f1f5f9; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 2rem;">🏗️</div>
+                <h3 style="color: var(--bg-malanga); font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 800;">Construction Services</h3>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7;">From residential complexes to private villas, our construction team delivers quality with verified documentation.</p>
+            </div>
+            <div style="background: #ffffff; padding: 4rem 3rem; border: 1px solid var(--border-light); border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,47,91,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                <div style="width: 80px; height: 80px; background: #f1f5f9; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 2rem;">🛡️</div>
+                <h3 style="color: var(--bg-malanga); font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 800;">Land Security</h3>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7;">We provide litigation-free plots and verified site plans across Tamale and expansion areas in Accra.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PROJECTS SECTION -->
+<div id="projects" style="max-width: 1300px; margin: 0 auto; padding: 140px 2rem;">
+    <div class="section-title">
+        <h2>Notable Projects</h2>
+        <p>Discover our ongoing and completed developments across Ghana.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 4rem;">
+        <div style="background: white; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 30px 60px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+            <div style="height: 350px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #94a3b8; font-size: 1.5rem; letter-spacing: 0.05em;">NAA LURO ESTATE</div>
+            <div style="padding: 3rem;">
+                <h4 style="color: var(--bg-malanga); font-size: 1.8rem; margin-bottom: 1rem; font-weight: 800;">The Heritage Complex</h4>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6;">A high-end residential complex located strategically behind I-Lee Pharmacy, Tamale.</p>
+                <div style="margin-top: 2rem; display: flex; gap: 15px;">
+                    <span style="font-size: 0.8rem; color: var(--bg-malanga); background: var(--primary-glow); padding: 8px 16px; border-radius: 4px; font-weight: 800; letter-spacing: 0.05em;">CONSTRUCTION</span>
+                    <span style="font-size: 0.8rem; color: #166534; background: #dcfce7; padding: 8px 16px; border-radius: 4px; font-weight: 800; letter-spacing: 0.05em;">ACTIVE PHASE</span>
+                </div>
+            </div>
+        </div>
+        <div style="background: white; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 30px 60px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+            <div style="height: 350px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #94a3b8; font-size: 1.5rem; letter-spacing: 0.05em;">ACCRA EXPANSION</div>
+            <div style="padding: 3rem;">
+                <h4 style="color: var(--bg-malanga); font-size: 1.8rem; margin-bottom: 1rem; font-weight: 800;">Airport City Plots</h4>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6;">Verified land security and master-planned brokerage services in the capital city.</p>
+                <div style="margin-top: 2rem; display: flex; gap: 15px;">
+                    <span style="font-size: 0.8rem; color: var(--bg-malanga); background: var(--primary-glow); padding: 8px 16px; border-radius: 4px; font-weight: 800; letter-spacing: 0.05em;">BROKERAGE</span>
+                    <span style="font-size: 0.8rem; color: #854d0e; background: #fef9c3; padding: 8px 16px; border-radius: 4px; font-weight: 800; letter-spacing: 0.05em;">PLOTTING</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PROPERTIES SECTION -->
+<div id="properties" style="background: #ffffff; padding: 140px 2rem; border-top: 1px solid var(--border-light);">
+    <div style="max-width: 1300px; margin: 0 auto;">
+        <div class="section-title">
+            <h2>Current Inventory</h2>
+            <p>Verified litigation-free listings available for immediate acquisition.</p>
+        </div>
+        <div class="property-grid">
+            {% for property in properties %}
+            <div class="luxury-card">
+                <div class="card-image-wrapper">
+                    {% if property.image %}
+                        <img src="{{ property.image.url }}" class="card-image" alt="{{ property.name }}">
+                    {% else %}
+                        <div class="card-image" style="display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 4rem;">🏠</div>
+                    {% endif %}
+                    <div class="price-badge">${{ property.price }}</div>
+                </div>
+                
+                <div class="card-content">
+                    <h3 class="card-title">{{ property.name }}</h3>
+                    <p class="card-meta">📍 {{ property.location }}</p>
+                    
+                    <!-- Meta Features Bar -->
+                    <div style="display: flex; gap: 15px; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-light); color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">
+                        {% if property.bedrooms %}<span>🛏️ {{ property.bedrooms }} Bed</span>{% endif %}
+                        {% if property.bathrooms %}<span>🛁 {{ property.bathrooms }} Bath</span>{% endif %}
+                        {% if property.size_sqm %}<span>📐 {{ property.size_sqm }} Sqm</span>{% endif %}
+                        <span style="margin-left: auto; color: var(--bg-malanga); background: var(--primary-glow); padding: 2px 10px; border-radius: 4px; font-size: 0.8rem; text-transform: uppercase;">{{ property.property_type }}</span>
+                    </div>
+
+                    <a href="{% url 'public_detail' property.id %}" class="btn-luxury" style="margin-top: auto;">View Details</a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 120px; background: #f8fafc; border-radius: 12px; border: 2px dashed var(--border-light);">
+                <p style="color: var(--text-muted); font-size: 1.2rem;">New litigation-free inventory is currently being verified. Stay tuned!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT SECTION -->
+<div id="contact" style="background: var(--bg-malanga); color: white; padding: 140px 2rem; text-align: center;">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <h2 style="font-size: 4rem; margin-bottom: 1.5rem; font-weight: 900; letter-spacing: -0.02em;">Let’s Build for Generations</h2>
+        <p style="font-size: 1.4rem; color: rgba(255,255,255,0.7); margin-bottom: 5rem; line-height: 1.6;">Contact Malanga One today for verified land acquisition or modern construction in Tamale and Accra.</p>
+        <div style="display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;">
+            <div>
+                <p style="text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.2em; color: var(--primary); margin-bottom: 0.5rem; font-weight: 700;">Direct Line</p>
+                <a href="tel:0534007070" style="color: white; font-size: 2.5rem; font-weight: 900; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='white'">0534007070</a>
+            </div>
+            <div>
+                <p style="text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.2em; color: var(--primary); margin-bottom: 0.5rem; font-weight: 700;">Headquarters</p>
+                <p style="font-size: 2.5rem; font-weight: 900; margin: 0;">Naa Luro Estate, Tamale</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

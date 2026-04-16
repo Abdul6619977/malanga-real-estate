@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Settings & Team | Malanga1 Admin{% endblock %}
+
+{% block content %}
+<div class="manage-container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+        <div>
+            <h1 style="color: var(--bg-malanga); font-size: 2.5rem; font-weight: 900; margin: 0;">Portal Security</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 5px;">Manage your access credentials and team member accounts.</p>
+        </div>
+    </div>
+
+    <!-- Messages display -->
+    {% if messages %}
+    <div style="margin-bottom: 2rem;">
+        {% for message in messages %}
+        <div style="padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 10px; font-weight: 700; {% if message.tags == 'success' %}background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;{% else %}background: #fee2e2; color: #991b1b; border: 1px solid #fecaca;{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+        
+        <!-- Left Column: Personal Security -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            
+            <div class="card" style="padding: 2.5rem; border-top: 4px solid var(--bg-malanga);">
+                <h2 style="font-size: 1.4rem; color: var(--bg-malanga); margin-bottom: 1.5rem; font-weight: 800;">Update Personal Username</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="update_username">
+                    <div style="margin-bottom: 1rem;">
+                        <label class="admin-form-label">New Username</label>
+                        <input type="text" name="username" class="admin-input" value="{{ request.user.username }}" required style="padding: 12px; font-weight: 700;">
+                    </div>
+                    <button type="submit" class="admin-btn" style="padding: 12px 24px;">Save Username</button>
+                </form>
+            </div>
+
+            <div class="card" style="padding: 2.5rem; border-top: 4px solid var(--bg-malanga);">
+                <h2 style="font-size: 1.4rem; color: var(--bg-malanga); margin-bottom: 1.5rem; font-weight: 800;">Update Master Password</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="update_password">
+                    <div style="margin-bottom: 1rem;">
+                        <label class="admin-form-label">New Password</label>
+                        <input type="password" name="new_password" class="admin-input" placeholder="Enter new password" required style="padding: 12px;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="admin-form-label">Confirm New Password</label>
+                        <input type="password" name="confirm_password" class="admin-input" placeholder="Repeat new password" required style="padding: 12px;">
+                    </div>
+                    <button type="submit" class="admin-btn" style="padding: 12px 24px; background: #991b1b;">Reset Password</button>
+                </form>
+            </div>
+            
+        </div>
+
+        <!-- Right Column: Staff Management -->
+        <div class="card" style="padding: 2.5rem; border-top: 4px solid var(--primary);">
+            <h2 style="font-size: 1.4rem; color: var(--bg-malanga); margin-bottom: 1.5rem; font-weight: 800;">Provision Team Access</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">Create independent accounts for brokers, administrators, and assistants. They will be able to manage inventory and leads.</p>
+            
+            <form method="POST" style="margin-bottom: 3rem; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px dashed var(--border-light);">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create_staff">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label class="admin-form-label">Staff Username</label>
+                        <input type="text" name="staff_username" class="admin-input" placeholder="e.g. broker_jane" required style="padding: 10px;">
+                    </div>
+                    <div>
+                        <label class="admin-form-label">Temporary Password</label>
+                        <input type="password" name="staff_password" class="admin-input" placeholder="Assign password" required style="padding: 10px;">
+                    </div>
+                </div>
+                <button type="submit" class="admin-btn" style="margin-top: 1rem; width: 100%; padding: 12px; background: var(--primary); color: var(--bg-malanga);">Add Team Member</button>
+            </form>
+
+            <h3 style="font-size: 1.2rem; color: var(--bg-malanga); margin-bottom: 1.5rem; font-weight: 800;">Active Staff Accounts</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-light);">
+                        <th style="text-align: left; padding: 10px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Username</th>
+                        <th style="text-align: left; padding: 10px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staff_members %}
+                    <tr style="border-bottom: 1px solid var(--border-light);">
+                        <td style="padding: 12px 10px; font-weight: 700; color: var(--text-dark);">{{ staff.username }}</td>
+                        <td style="padding: 12px 10px;">
+                            <span style="background: rgba(249, 228, 0, 0.2); color: #854d0e; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">Team Editor</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" style="padding: 2rem 10px; text-align: center; color: var(--text-muted); font-size: 0.95rem;">You are the only member with active portal access.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

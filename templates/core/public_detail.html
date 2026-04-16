@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}{{ property.name }} | Malanga1 Real Estate{% endblock %}
+
+{% block content %}
+<!-- Immersive Header -->
+<div style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-bottom: 1px solid var(--border-light); padding: 80px 2rem 60px 2rem;">
+    <div style="max-width: 1300px; margin: 0 auto;">
+        <a href="{% url 'public_home' %}#properties" style="color: var(--bg-malanga); text-decoration: none; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.15em; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 2rem; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='translateX(-5px)'" onmouseout="this.style.transform='translateX(0)'">← BACK TO ALL PROPERTIES</a>
+        <h1 style="font-size: 4.5rem; color: var(--bg-malanga); font-weight: 900; letter-spacing: -0.04em; margin: 0; line-height: 1.1;">{{ property.name }}</h1>
+        <p style="font-size: 1.8rem; color: var(--text-muted); margin-top: 1.5rem; font-weight: 500;">📍 {{ property.location }}</p>
+    </div>
+</div>
+
+<div style="max-width: 1300px; margin: 80px auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 420px; gap: 6rem; align-items: start;">
+    
+    <!-- Left: Property Visuals & Details -->
+    <div>
+        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px rgba(0, 47, 91, 0.1); border: 1px solid var(--border-light);">
+            {% if property.image %}
+                <img src="{{ property.image.url }}" style="width: 100%; display: block;" alt="{{ property.name }}">
+            {% else %}
+                <div style="width: 100%; height: 500px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 6rem; color: #94a3b8;">🏠</div>
+            {% endif %}
+        </div>
+
+        <!-- Gallery Grid -->
+        {% if images %}
+        <div style="margin-top: 4rem;">
+            <p style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.2rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 800;">Interior & Surroundings Gallery</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+                {% for img in images %}
+                <div style="aspect-ratio: 16/11; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light); cursor: zoom-in; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 5px 15px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.boxShadow='0 20px 40px rgba(0,47,91,0.12)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.04)'">
+                    <img src="{{ img.image.url }}" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Property View">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div style="margin-top: 5rem;">
+            <div style="width: 60px; height: 4px; background: var(--bg-malanga); margin-bottom: 2.5rem;"></div>
+            <h3 style="font-size: 2.5rem; color: var(--bg-malanga); margin-bottom: 2rem; font-weight: 900;">Property Information</h3>
+            
+            <!-- Structural Features Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 3rem;">
+                <div style="background: white; border: 1px solid var(--border-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <span style="display: block; font-size: 2rem; margin-bottom: 0.5rem; color: var(--bg-malanga);">🏢</span>
+                    <strong style="display: block; font-size: 1.1rem; color: var(--text-dark);">{{ property.property_type }}</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Asset Type</span>
+                </div>
+                {% if property.bedrooms %}
+                <div style="background: white; border: 1px solid var(--border-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <span style="display: block; font-size: 2rem; margin-bottom: 0.5rem; color: var(--bg-malanga);">🛏️</span>
+                    <strong style="display: block; font-size: 1.1rem; color: var(--text-dark);">{{ property.bedrooms }}</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Bedrooms</span>
+                </div>
+                {% endif %}
+                {% if property.bathrooms %}
+                <div style="background: white; border: 1px solid var(--border-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <span style="display: block; font-size: 2rem; margin-bottom: 0.5rem; color: var(--bg-malanga);">🛁</span>
+                    <strong style="display: block; font-size: 1.1rem; color: var(--text-dark);">{{ property.bathrooms }}</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Bathrooms</span>
+                </div>
+                {% endif %}
+                {% if property.size_sqm %}
+                <div style="background: white; border: 1px solid var(--border-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <span style="display: block; font-size: 2rem; margin-bottom: 0.5rem; color: var(--bg-malanga);">📐</span>
+                    <strong style="display: block; font-size: 1.1rem; color: var(--text-dark);">{{ property.size_sqm }}</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Sq Meters</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <p style="color: var(--text-muted); line-height: 1.9; font-size: 1.25rem; margin-bottom: 4rem;">
+                {{ property.description|default:"Verified litigation-free property managed by Malanga1 Company Ltd. This listing has been thoroughly vetted by our legal and surveying team to ensure a secure, transparent, and direct acquisition process for our investors. Built for generations." }}
+            </p>
+            
+            <div style="padding: 3rem; background: #f8fafc; border: 1px solid var(--border-light); border-left: 6px solid var(--primary); border-radius: 0 12px 12px 0;">
+                <p style="margin: 0; color: var(--bg-malanga); font-weight: 800; font-size: 1.2rem; display: flex; gap: 15px; align-items: center;">
+                    <span style="font-size: 2rem;">🛡️</span> 
+                    Malanga One Litigation-Free Guarantee Included.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Sticky Form & Price -->
+    <div style="position: sticky; top: 120px;">
+        <div style="background: white; border: 1px solid var(--border-light); padding: 3.5rem; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.06);">
+            <p style="text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.2rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 700;">
+                {% if property.status == 'Available' %}Listing Price{% else %}Market Value (SOLD){% endif %}
+            </p>
+            <div style="font-size: 3.5rem; font-weight: 900; color: {% if property.status == 'Available' %}var(--bg-malanga){% else %}#ef4444{% endif %}; margin-bottom: 3rem; line-height: 1;">
+                ${{ property.price }}
+            </div>
+            
+            {% if property.status == 'Available' %}
+            <h4 style="margin-bottom: 2rem; color: var(--bg-malanga); font-weight: 900; font-size: 1.4rem;">Request Documentation</h4>
+            <form action="{% url 'submit_inquiry' %}" method="POST" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                {% csrf_token %}
+                <input type="hidden" name="property_id" value="{{ property.id }}">
+                <input type="text" name="name" class="public-input" placeholder="Full Name" required>
+                <input type="email" name="email" class="public-input" placeholder="Email Address" required>
+                <textarea name="message" class="public-input" rows="4" placeholder="Your Inquiry" required style="resize: none;"></textarea>
+                <button type="submit" class="btn-luxury" style="margin-top: 1rem; padding: 18px; font-size: 1rem;">Secure This Property</button>
+            </form>
+            {% else %}
+            <div style="padding: 2rem; background: #fee2e2; border: 2px solid #ef4444; border-radius: 8px; text-align: center;">
+                <h4 style="color: #b91c1c; margin: 0; font-weight: 900;">LISTING CLOSED</h4>
+                <p style="color: #ef4444; margin-top: 10px; font-size: 0.9rem;">This property has been successfully acquired and is no longer available.</p>
+            </div>
+            {% endif %}
+            
+            <div style="margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--border-light); text-align: center;">
+                <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 10px; font-weight: 500;">Speak with our lead broker:</p>
+                <a href="tel:0534007070" style="color: var(--bg-malanga); font-weight: 900; font-size: 1.6rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--bg-malanga)'">0534007070</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

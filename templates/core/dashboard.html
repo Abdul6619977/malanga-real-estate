@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h1>System Dashboard</h1>
+    <p>Minimal overview of your Real Estate Management System.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+        <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Total Collected</h3>
+            <div style="font-size: 2rem; font-weight: 800; color: #166534; margin: 8px 0;">${{ total_payments }}</div>
+        </div>
+        
+        <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Occupancy Rate</h3>
+            <div style="font-size: 2rem; font-weight: 800; color: #2563eb; margin: 8px 0;">{{ occupancy_rate }}%</div>
+            <p style="margin: 0; font-size: 0.85rem; color: #64748b;">{{ occupied_properties }} / {{ total_properties }} units</p>
+        </div>
+
+        <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+            <h3 style="margin: 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Active Tenants</h3>
+            <div style="font-size: 2rem; font-weight: 800; color: #1e293b; margin: 8px 0;">{{ total_tenants }}</div>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+    <a href="{% url 'assign' %}" style="text-decoration:none;">
+        <div class="card" style="text-align: center; padding: 1.5rem; margin: 0;">
+            <h3>🔗 Assign Tenant</h3>
+            <p style="color: #64748b;">Link tenants to rooms</p>
+        </div>
+    </a>
+    <a href="{% url 'payments' %}" style="text-decoration:none;">
+        <div class="card" style="text-align: center; padding: 1.5rem; margin: 0;">
+            <h3>💰 Record Payment</h3>
+            <p style="color: #64748b;">Save new income</p>
+        </div>
+    </a>
+</div>
+{% endblock %}

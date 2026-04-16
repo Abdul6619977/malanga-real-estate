@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Add New Tenant</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Tenant Full Name" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <button type="submit">Add Tenant</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Active Tenants</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Properties Rented</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tenants %}
+            <tr>
+                <td>{{ t.name }}</td>
+                <td>{{ t.phone }}</td>
+                <td>
+                    {% for p in t.properties.all %}
+                        {{ p.name }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        -
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

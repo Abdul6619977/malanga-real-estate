@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block title %}Inventory Management | Malanga1 Admin{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+    <div>
+        <h1 style="margin: 0; color: var(--bg-malanga);">Property Inventory</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Manage your active listings and update property status.</p>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 2.5fr; gap: 3rem; align-items: start;">
+    
+    <!-- Left Column: Add Property Form -->
+    <div class="card" style="position: sticky; top: 120px; padding: 2.5rem; border-top: 4px solid var(--bg-malanga);">
+        <h2 style="font-size: 1.4rem; color: var(--bg-malanga); margin-bottom: 2rem; font-weight: 800;">Create Inventory Listing</h2>
+        <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1.2rem;">
+            {% csrf_token %}
+            
+            <!-- Type & Name -->
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
+                <div>
+                    <label class="admin-form-label">Type</label>
+                    <select name="property_type" class="admin-input" style="padding: 12px; cursor: pointer;">
+                        <option value="House">House</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Plot">Plot / Land</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="admin-form-label">Property Title</label>
+                    <input type="text" name="name" class="admin-input" placeholder="e.g. Sapphire Penthouse" style="padding: 12px;" required>
+                </div>
+            </div>
+            
+            <!-- Location -->
+            <div>
+                <label class="admin-form-label">Location / Address</label>
+                <input type="text" name="location" class="admin-input" placeholder="e.g. Tamale Metropolis" style="padding: 12px;" required>
+            </div>
+
+            <!-- Meta Details -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label class="admin-form-label">Beds</label>
+                    <input type="number" name="bedrooms" class="admin-input" placeholder="e.g. 4" style="padding: 12px;">
+                </div>
+                <div>
+                    <label class="admin-form-label">Baths</label>
+                    <input type="number" name="bathrooms" class="admin-input" placeholder="e.g. 3" style="padding: 12px;">
+                </div>
+                <div>
+                    <label class="admin-form-label">Size (sqm)</label>
+                    <input type="number" name="size_sqm" class="admin-input" placeholder="e.g. 150" style="padding: 12px;">
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="admin-form-label">Property Description</label>
+                <textarea name="description" class="admin-input" rows="4" placeholder="Describe the property, amenities, and legal status..." style="padding: 12px; resize: none;"></textarea>
+            </div>
+
+            <!-- Main Image -->
+            <div>
+                <label class="admin-form-label">Featured Image (Primary)</label>
+                <input type="file" name="image" class="admin-input" style="padding: 10px;" accept="image/*">
+            </div>
+
+            <!-- Gallery Images -->
+            <div>
+                <label class="admin-form-label">Secondary Gallery Assets (Multiple)</label>
+                <input type="file" name="gallery_images" class="admin-input" style="padding: 10px;" accept="image/*" multiple>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; font-style: italic;">Select multiple images to showcase the interior and surroundings.</p>
+            </div>
+
+            <!-- Price -->
+            <div style="margin-top: 0.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light);">
+                <label class="admin-form-label">Listing Price ($)</label>
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--text-muted);">$</span>
+                    <input type="number" name="price" class="admin-input" style="padding: 14px 14px 14px 35px; font-size: 1.2rem; font-weight: 800;" placeholder="0.00" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="admin-btn" style="width: 100%; margin-top: 1.5rem; padding: 16px;">+ Deploy Listing</button>
+        </form>
+    </div>
+
+    <!-- Right Column: Inventory Table -->
+    <div class="card" style="padding: 2.5rem;">
+        <h2 style="font-size: 1.4rem; color: var(--bg-malanga); margin-bottom: 2rem; font-weight: 800;">Malanga Portfolio Tracker</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property Details</th>
+                    <th>Assets</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in properties %}
+                <tr style="transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                    <td>
+                        <strong style="color: var(--text-dark); display: block; font-size: 1.05rem;">{{ p.name }}</strong>
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">📍 {{ p.location }}</span>
+                    </td>
+                    <td>
+                        <span style="background: rgba(0,47,91,0.05); color: var(--bg-malanga); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">
+                            {{ p.property_type }}
+                        </span>
+                    </td>
+                    <td style="font-weight: 800; color: #166534; font-size: 1.1rem;">${{ p.price }}</td>
+                    <td>
+                        <span class="badge {% if p.status == 'Available' %}badge-available{% else %}badge-sold{% endif %}">
+                            {{ p.status }}
+                        </span>
+                    </td>
+                    <td style="text-align: right;">
+                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                            <a href="{% url 'edit_property' p.id %}" style="text-decoration: none; padding: 6px 14px; background: #f8fafc; color: var(--bg-malanga); border: 1px solid var(--border-light); border-radius: 4px; font-size: 0.75rem; font-weight: 800; transition: all 0.2s;" onmouseover="this.style.background='var(--bg-malanga)'; this.style.color='white'" onmouseout="this.style.background='#f8fafc'; this.style.color='var(--bg-malanga)'">Edit</a>
+                            
+                            {% if p.status == 'Available' %}
+                                <a href="{% url 'mark_sold' p.id %}" style="text-decoration: none; padding: 6px 14px; background: white; color: #166534; border: 1px solid #166534; border-radius: 4px; font-size: 0.75rem; font-weight: 800; transition: all 0.2s;" onmouseover="this.style.background='#166534'; this.style.color='white'" onmouseout="this.style.background='white'; this.style.color='#166534'">Close Deal</a>
+                            {% else %}
+                                <span style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); opacity: 0.6; text-transform: uppercase; align-self: center;">✔ Sold</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted); font-size: 1.1rem; border: 2px dashed var(--border-light);">Your property portfolio is empty. Add a listing to begin tracking inventory.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

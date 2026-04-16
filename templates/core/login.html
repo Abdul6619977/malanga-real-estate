@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Malanga1 Company Ltd</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle animated background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(0, 47, 91, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(249, 228, 0, 0.05) 0%, transparent 50%);
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, 2%); }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            padding: 0 20px;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header img {
+            height: 60px;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-header h1 {
+            font-size: 1.5rem;
+            color: #002f5b;
+            font-weight: 800;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .login-header p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: #1e293b;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+            background: #f8fafc;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #002f5b;
+            background: #ffffff;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: #002f5b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #001f3f;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 47, 91, 0.3);
+        }
+
+        .error-msg {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #fecaca;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .login-footer a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .login-footer a:hover {
+            color: #002f5b;
+        }
+
+        .security-badge {
+            text-align: center;
+            margin-top: 2rem;
+            color: #475569;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="{% static 'images/logo.jpg' %}" alt="Malanga1 Company Ltd">
+                <h1>Admin Portal</h1>
+                <p>Sign in to manage your property portfolio</p>
+            </div>
+
+            {% if form.errors %}
+            <div class="error-msg">
+                Invalid username or password. Please try again.
+            </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input type="text" name="username" id="id_username" placeholder="Enter your username" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+
+            <div class="login-footer">
+                <a href="{% url 'public_home' %}">← Back to Malanga1 Website</a>
+            </div>
+        </div>
+
+        <div class="security-badge">
+            🔒 Protected Portal — Malanga1 Company Ltd © 2026
+        </div>
+    </div>
+</body>
+</html>
