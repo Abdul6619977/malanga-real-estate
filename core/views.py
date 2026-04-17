@@ -283,4 +283,25 @@ def edit_property(request, pk):
         messages.success(request, f"Property '{property.name}' has been successfully updated.")
         return redirect('properties')
         
-    return render(request, 'core/manage/edit_property.html', {'property': property})
+def debug_auth(request):
+    """Temporary diagnostic view to debug live authentication issues."""
+    import os
+    from django.contrib.auth.models import User
+    from django.http import HttpResponse
+
+    username_env = os.environ.get('ADMIN_USERNAME', 'NOT SET')
+    password_env = 'SET (HIDDEN)' if os.environ.get('ADMIN_PASSWORD') else 'NOT SET'
+    
+    user_exists = User.objects.filter(username=username_env).exists() if username_env != 'NOT SET' else False
+    all_users = list(User.objects.all().values_list('username', flat=True))
+    
+    html = f"""
+    <h1>Live Auth Diagnostic</h1>
+    <p><b>ADMIN_USERNAME (Env):</b> {username_env}</p>
+    <p><b>ADMIN_PASSWORD (Env):</b> {password_env}</p>
+    <p><b>Does user "{username_env}" exist in DB?</b> {'YES' if user_exists else 'NO'}</p>
+    <p><b>All Existing Users in DB:</b> {all_users}</p>
+    <hr>
+    <p>If the user doesn't exist, check your Render Environment variables to ensure they are saved correctly.</p>
+    """
+    return HttpResponse(html)

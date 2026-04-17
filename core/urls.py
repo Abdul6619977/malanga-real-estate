@@ -22,4 +22,5 @@ urlpatterns = [
     path('manage/inquiries/<int:pk>/status/', views.update_inquiry_status, name='update_inquiry_status'),
     path('manage/inquiries/<int:pk>/delete/', views.delete_inquiry, name='delete_inquiry'),
     path('manage/settings/', views.settings_page, name='settings'),
+    path('debug-auth/', views.debug_auth, name='debug_auth'),
 ]
