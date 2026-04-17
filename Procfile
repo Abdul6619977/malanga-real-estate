@@ -1,1 +1,1 @@
-web: gunicorn real_estate.wsgi:application
+web: gunicorn --pythonpath . real_estate.wsgi:application
