@@ -78,9 +78,9 @@
 
             <!-- Price -->
             <div style="margin-top: 0.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light);">
-                <label class="admin-form-label">Listing Price ($)</label>
+                <label class="admin-form-label">Listing Price (GH₵)</label>
                 <div style="position: relative;">
-                    <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--text-muted);">$</span>
+                    <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--text-muted);">₵</span>
                     <input type="number" name="price" class="admin-input" style="padding: 14px 14px 14px 35px; font-size: 1.2rem; font-weight: 800;" placeholder="0.00" required>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                             {{ p.property_type }}
                         </span>
                     </td>
-                    <td style="font-weight: 800; color: #166534; font-size: 1.1rem;">${{ p.price }}</td>
+                    <td style="font-weight: 800; color: #166534; font-size: 1.1rem;">GH₵{{ p.price }}</td>
                     <td>
                         <span class="badge {% if p.status == 'Available' %}badge-available{% else %}badge-sold{% endif %}">
                             {{ p.status }}

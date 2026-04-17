@@ -91,7 +91,7 @@
                 {% if property.status == 'Available' %}Listing Price{% else %}Market Value (SOLD){% endif %}
             </p>
             <div style="font-size: 3.5rem; font-weight: 900; color: {% if property.status == 'Available' %}var(--bg-malanga){% else %}#ef4444{% endif %}; margin-bottom: 3rem; line-height: 1;">
-                ${{ property.price }}
+                GH₵{{ property.price }}
             </div>
             
             {% if property.status == 'Available' %}

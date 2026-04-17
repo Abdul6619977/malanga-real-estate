@@ -43,9 +43,9 @@
             <div style="flex: 1.5; display: flex; align-items: center; padding: 0 15px;">
                 <span style="font-size: 1.2rem; margin-right: 10px;">💰</span>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" name="min_price" value="{{ min_price|default:'' }}" placeholder="Min $" style="border: 1px solid var(--border-light); width: 90px; padding: 8px; border-radius: 6px; font-size: 0.9rem; font-family: inherit;">
+                    <input type="number" name="min_price" value="{{ min_price|default:'' }}" placeholder="Min ₵" style="border: 1px solid var(--border-light); width: 90px; padding: 8px; border-radius: 6px; font-size: 0.9rem; font-family: inherit;">
                     <span style="color: var(--text-muted);">-</span>
-                    <input type="number" name="max_price" value="{{ max_price|default:'' }}" placeholder="Max $" style="border: 1px solid var(--border-light); width: 90px; padding: 8px; border-radius: 6px; font-size: 0.9rem; font-family: inherit;">
+                    <input type="number" name="max_price" value="{{ max_price|default:'' }}" placeholder="Max ₵" style="border: 1px solid var(--border-light); width: 90px; padding: 8px; border-radius: 6px; font-size: 0.9rem; font-family: inherit;">
                 </div>
             </div>
             <button type="submit" class="btn-luxury" style="width: auto; padding: 12px 30px; border-radius: 8px; margin-left: 10px; font-size: 0.95rem;">Filter</button>
@@ -189,7 +189,7 @@
                     {% else %}
                         <div class="card-image" style="display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 4rem;">🏠</div>
                     {% endif %}
-                    <div class="price-badge">${{ property.price }}</div>
+                    <div class="price-badge">GH₵{{ property.price }}</div>
                 </div>
                 
                 <div class="card-content">
