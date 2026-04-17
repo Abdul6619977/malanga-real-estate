@@ -29,10 +29,10 @@ services:
       # ─── Automatic Superuser Creation ──────────────────────────────────────
       - key: ADMIN_USERNAME
         sync: false
-        placeholder: "Enter admin username"
+        placeholder: "e.g. malanga1"
       - key: ADMIN_PASSWORD
         sync: false
-        placeholder: "Enter admin password"
+        placeholder: "e.g. malanga123"
       - key: ADMIN_EMAIL
         sync: false
         placeholder: "Enter admin email (optional)"
