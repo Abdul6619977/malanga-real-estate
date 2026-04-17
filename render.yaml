@@ -12,7 +12,7 @@ services:
     env: python
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn --pythonpath . real_estate.wsgi:application"
+    startCommand: "python manage.py migrate && python manage.py initadmin && gunicorn --pythonpath . real_estate.wsgi:application"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
