@@ -29,6 +29,12 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if os.environ.get('DJANGO_ALLOWED_HOSTS') else []
 
+# CSRF Trusted Origins for Render/Production
+if os.environ.get('DJANGO_ALLOWED_HOSTS'):
+    CSRF_TRUSTED_ORIGINS = [f"https://{host.strip()}" for host in os.environ.get('DJANGO_ALLOWED_HOSTS').split(',')]
+else:
+    CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000"]
+
 
 # ─── Jazzmin Admin Theme ─────────────────────────────────────────────────────
 JAZZMIN_SETTINGS = {
