@@ -171,6 +171,10 @@ DATABASES = {
     )
 }
 
+# If on Render, enable SSL for PostgreSQL
+if os.environ.get('DATABASE_URL') and not DEBUG:
+    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
