@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
             if not username or not password:
                 self.stdout.write(self.style.WARNING(
-                    f'DEBUG_ADMIN: ABORTED. Mandatory variables missing.'
+                    f'DEBUG_ADMIN: ABORTED. Mandatory variables missing ADMIN_USERNAME or ADMIN_PASSWORD.'
                 ))
                 return
 
