@@ -206,7 +206,14 @@
                     {% else %}
                         <div class="card-image" style="display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 4rem;">🏠</div>
                     {% endif %}
+                    
                     <div class="price-badge">GH₵{{ property.price }}</div>
+                    
+                    <!-- NEW Badge logic -->
+                    {% now "Y-m-d" as todays_date %}
+                    {% if property.created_at|date:"Y-m-d" == todays_date %}
+                        <div style="position: absolute; top: 15px; right: 15px; background: #be123c; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; box-shadow: 0 4px 12px rgba(190, 18, 60, 0.4); z-index: 10;">NEW</div>
+                    {% endif %}
                 </div>
                 
                 <div class="card-content">

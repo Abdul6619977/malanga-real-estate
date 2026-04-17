@@ -72,7 +72,10 @@
                     <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 10px;">Replace Featured Image</label>
                     <input type="file" name="image" style="background: white; border: 1px dashed var(--border-light); padding: 10px; width: 100%; border-radius: 6px;">
                     {% if property.image %}
-                        <div style="margin-top: 15px; font-size: 0.8rem; color: #166534;">Current: {{ property.image.name }}</div>
+                        <div style="margin-top: 15px; display: flex; gap: 15px; align-items: center; background: white; padding: 10px; border-radius: 8px; border: 1px solid var(--border-light);">
+                            <img src="{{ property.image.url }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                            <span style="font-size: 0.8rem; color: #166534;">Current: {{ property.image.name|truncatechars:20 }}</span>
+                        </div>
                     {% endif %}
                 </div>
                 <div>

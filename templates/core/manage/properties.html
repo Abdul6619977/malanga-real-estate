@@ -121,14 +121,17 @@
                         </span>
                     </td>
                     <td style="text-align: right;">
-                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                            <a href="{% url 'public_detail' p.id %}" target="_blank" style="text-decoration: none; padding: 6px 10px; background: white; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 4px; font-size: 0.75rem; transition: all 0.2s;" title="View on Site">👁️</a>
                             <a href="{% url 'edit_property' p.id %}" style="text-decoration: none; padding: 6px 14px; background: #f8fafc; color: var(--bg-malanga); border: 1px solid var(--border-light); border-radius: 4px; font-size: 0.75rem; font-weight: 800; transition: all 0.2s;" onmouseover="this.style.background='var(--bg-malanga)'; this.style.color='white'" onmouseout="this.style.background='#f8fafc'; this.style.color='var(--bg-malanga)'">Edit</a>
                             
                             {% if p.status == 'Available' %}
                                 <a href="{% url 'mark_sold' p.id %}" style="text-decoration: none; padding: 6px 14px; background: white; color: #166534; border: 1px solid #166534; border-radius: 4px; font-size: 0.75rem; font-weight: 800; transition: all 0.2s;" onmouseover="this.style.background='#166534'; this.style.color='white'" onmouseout="this.style.background='white'; this.style.color='#166534'">Close Deal</a>
                             {% else %}
-                                <span style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); opacity: 0.6; text-transform: uppercase; align-self: center;">✔ Sold</span>
+                                <span style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); opacity: 0.6; text-transform: uppercase;">✔ Sold</span>
                             {% endif %}
+                            
+                            <a href="{% url 'delete_property' p.id %}" onclick="return confirm('Permanently delete {{ p.name }}?')" style="text-decoration: none; padding: 6px 10px; background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; border-radius: 4px; font-size: 0.75rem; transition: all 0.2s;" title="Delete Listing">🗑️</a>
                         </div>
                     </td>
                 </tr>
