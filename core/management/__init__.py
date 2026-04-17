@@ -1,1 +1,1 @@
-ÿþ
+# UTF-8 encoded
