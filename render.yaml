@@ -26,3 +26,13 @@ services:
         value: "malanga-real-estate.onrender.com"
       - key: PYTHON_VERSION
         value: "3.11.9"
+      # ─── Automatic Superuser Creation ──────────────────────────────────────
+      - key: DJANGO_SUPERUSER_USERNAME
+        sync: false
+        placeholder: "Enter admin username"
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false
+        placeholder: "Enter admin password"
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+        placeholder: "Enter admin email (optional)"
