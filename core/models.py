@@ -2,8 +2,10 @@ from django.db import models
 
 class Property(models.Model):
     STATUS_CHOICES = (
+        ('Pending', 'Pending'),
         ('Available', 'Available'),
         ('Sold', 'Sold'),
+        ('Cancelled', 'Cancelled'),
     )
     TYPE_CHOICES = (
         ('House', 'House'),

@@ -170,11 +170,20 @@ def properties_page(request):
     return render(request, 'core/manage/properties.html', {'properties': properties})
 
 @login_required
-def mark_sold(request, pk):
+def update_property_status(request, pk, new_status):
+    """Dynamic status update for property listings."""
     property = get_object_or_404(Property, pk=pk)
-    property.status = 'Sold'
-    property.save()
-    messages.success(request, f"Property '{property.name}' marked as SOLD!")
+    # Choices are [('Pending', 'Pending'), ('Available', 'Available'), ...]
+    valid_statuses = [s[0] for s in Property.STATUS_CHOICES]
+    
+    if new_status in valid_statuses:
+        old_status = property.status
+        property.status = new_status
+        property.save()
+        messages.success(request, f"Property '{property.name}' status updated to {new_status}!")
+    else:
+        messages.error(request, f"Invalid status selection: {new_status}")
+        
     return redirect('properties')
 
 @login_required
