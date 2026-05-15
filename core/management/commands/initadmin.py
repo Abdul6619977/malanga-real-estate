@@ -8,8 +8,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('DEBUG_ADMIN: --- InitAdmin Command Started ---')
         try:
-            username = os.environ.get('ADMIN_USERNAME', '').strip()
-            password = os.environ.get('ADMIN_PASSWORD', '').strip()
+            username = os.environ.get('ADMIN_USERNAME', 'malanga').strip()
+            password = os.environ.get('ADMIN_PASSWORD', 'admin123').strip()
             email = os.environ.get('ADMIN_EMAIL', 'admin@example.com').strip()
 
             self.stdout.write(f'DEBUG_ADMIN: Configured Username: "{username}"')
